@@ -5,6 +5,7 @@ plugins {
     kotlin("native.cocoapods")
     id("com.android.library")
     kotlin("plugin.serialization")
+    id("com.squareup.sqldelight")
 }
 
 version = "1.0"
@@ -17,6 +18,9 @@ val mockk_version = "1.9.3"
 val sql_delight_version = "1.4.4"
 val kotlin_version = "1.4.31"
 val kotlin_serialization_version = "1.2.2"
+
+val sqlDelightVersion: String by project
+
 
 kotlin {
     android()
@@ -58,7 +62,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-serialization:$ktor_version")
 
                 // SQL Delight
-                implementation("com.squareup.sqldelight:runtime:$sql_delight_version")
+                implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
 
                 implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlin_serialization_version")
 
@@ -82,7 +86,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-android:$ktor_version")
 
                 // SQL Delight
-                implementation("com.squareup.sqldelight:android-driver:$sql_delight_version")
+                implementation("com.squareup.sqldelight:android-driver:$sqlDelightVersion")
             }
         }
         val androidTest by getting {
@@ -99,25 +103,25 @@ kotlin {
                 implementation ("io.ktor:ktor-client-ios:$ktor_version")
 
                 // SQL Delight
-                implementation("com.squareup.sqldelight:native-driver:$sql_delight_version")
+                implementation("com.squareup.sqldelight:native-driver:$sqlDelightVersion")
             }
         }
         val iosTest by getting
     }
 
-//    sqldelight {
-//        AppDatabase {
-//            packageName = "com.simtop.shared_db"
-//        }
-//        linkSqlite = true
-//    }
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 30
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdkVersion(21)
-        targetSdkVersion(30)
+        minSdk = 21
+        targetSdk = 30
+    }
+}
+
+sqldelight {
+    database("AppDatabase") {
+        packageName = "com.simtop.shared_db.beers"
     }
 }

@@ -1,0 +1,25 @@
+CREATE TABLE Beer (
+id INTEGER AS Int NOT NULL PRIMARY KEY,
+name TEXT NOT NULL,
+tagline TEXT NOT NULL,
+description TEXT NOT NULL,
+imageUrl TEXT NOT NULL,
+abv REAL NOT NULL,
+ibu REAL NOT NULL,
+foodPairing TEXT NOT NULL,
+availability INTEGER AS Boolean DEFAULT 0 NOT NULL
+);
+
+selectAllBeers:
+SELECT * FROM Beer;
+
+insertBeer:
+INSERT INTO Beer(id, name, tagline, description, imageUrl, abv, ibu, foodPairing, availability)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+removeAllBeers:
+DELETE FROM Beer;
+
+updateAvailability:
+UPDATE Beer SET availability = ? WHERE id = ?;
+

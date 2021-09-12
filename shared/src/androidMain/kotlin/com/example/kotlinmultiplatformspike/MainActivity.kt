@@ -9,12 +9,12 @@ class MainActivity: AppCompatActivity() {
 
     val viewmodel by lazy {
         BeersListViewModel(
-            KtorRemote(),
+            BeerRepository(DatabaseDriverFactory(this)),
             CorroutineDispatcherProvider()
         )
     }
 
-    private lateinit var getBeersObserver : (beers: List<BeersApiResponseItem>) -> Unit
+    private lateinit var getBeersObserver : (beers: List<BeerModel>) -> Unit
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,9 +28,12 @@ class MainActivity: AppCompatActivity() {
         }
     }
 
-    private fun doSomething(value: List<BeersApiResponseItem>) {
+    private fun doSomething(value: List<BeerModel>) {
         if (value.isEmpty()) return
-        Toast.makeText(this, value.toString(), Toast.LENGTH_LONG).show()
+        val pairing = value.map{
+            it.foodPairing
+        }
+        Toast.makeText(this, pairing.toString(), Toast.LENGTH_LONG).show()
         println("Beers $value")
     }
 
