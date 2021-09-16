@@ -8,7 +8,7 @@ data class BeerModel(
     val imageUrl: String,
     val abv: Double,
     val ibu: Double,
-    val foodPairing: String,
+    val foodPairing: List<String>,
     var availability: Boolean = true
 ) {
     companion object {
@@ -20,7 +20,7 @@ data class BeerModel(
             "",
             0.0,
             0.0,
-            "",
+            listOf(),
             true
         )
     }

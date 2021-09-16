@@ -37,7 +37,7 @@ class BeerRepository(databaseDriverFactory: DatabaseDriverFactory) {
                 imageUrl ?: "",
                 abv ?: 0.0,
                 ibu ?: 0.0,
-                foodPairing.toString(),
+                foodPairing?: listOf(),
                 false
             )
         }

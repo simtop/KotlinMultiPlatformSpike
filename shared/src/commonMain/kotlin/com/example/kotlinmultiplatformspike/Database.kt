@@ -1,7 +1,9 @@
 package com.example.kotlinmultiplatformspike
 
 import com.simtop.shared_db.beers.AppDatabase
-import comexamplekotlinmultiplaformspike.db.Beer
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.Json
 
 internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
     private val database = AppDatabase(databaseDriverFactory.createDriver())
@@ -28,8 +30,10 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
         ibu: Double,
         foodPairing: String,
         availability: Boolean
-    ) =
-        BeerModel(
+    ): BeerModel {
+        val serializer = Json(from = Json) { ignoreUnknownKeys = true }
+
+        return BeerModel(
             id,
             name,
             tagline,
@@ -37,12 +41,14 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
             imageUrl,
             abv,
             ibu,
-            foodPairing,
+            serializer.decodeFromString(ListSerializer(String.serializer()), foodPairing),
             availability
         )
-
+    }
 
     internal fun insertBeer(beer: BeerModel) {
+        val serializer = Json(from = Json) { ignoreUnknownKeys = true }
+
         dbQuery.insertBeer(
             id = beer.id,
             name = beer.name,
@@ -51,7 +57,10 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
             imageUrl = beer.imageUrl,
             abv = beer.abv,
             ibu = beer.ibu,
-            foodPairing = beer.foodPairing,
+            foodPairing = serializer.encodeToString(
+                ListSerializer(String.serializer()),
+                beer.foodPairing
+            ),
             availability = beer.availability
         )
     }
