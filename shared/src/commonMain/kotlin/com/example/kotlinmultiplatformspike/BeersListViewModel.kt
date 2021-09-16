@@ -11,8 +11,16 @@ class BeersListViewModel(private val repository: BeerRepository, private val dis
 
     fun getBeerList(page: Int = 1) {
         viewModelScope.launch(dispatcherProvider.io) {
-            val list = repository.getBeers(false, page)
-            beerList.postValue(list)
+            repository.getBeers(false, page).also(::setList)
         }
+    }
+
+    private fun setList(result: Either<Exception, List<BeerModel>>) {
+            when(result){
+                is Either.Left -> {
+                    println("Hola ${result.value.message}")
+                }
+                is Either.Right -> beerList.postValue(result.value)
+            }
     }
 }
