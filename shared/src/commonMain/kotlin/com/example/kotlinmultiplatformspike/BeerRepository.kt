@@ -9,11 +9,9 @@ class BeerRepository(databaseDriverFactory: DatabaseDriverFactory) {
         return if (cachedBeers.isNotEmpty() && !forceReload) {
             cachedBeers
         } else {
-            fromListBeerApiModelToBeerModel(api.getListOfBeers(page)).also {
+            fromListBeerApiModelToBeerModel(api.getListOfBeers(page)).also { beers ->
                 database.clearDatabase()
-                it.map { beer ->
-                    database.insertBeer(beer)
-                }
+                database.insertBeerList(beers)
             }
         }
     }

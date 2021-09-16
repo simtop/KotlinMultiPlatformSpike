@@ -64,4 +64,10 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
             availability = beer.availability
         )
     }
+
+    fun insertBeerList(beers: List<BeerModel>) = database.transaction {
+        beers.map {
+            insertBeer(it)
+        }
+    }
 }
