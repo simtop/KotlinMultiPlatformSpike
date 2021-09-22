@@ -6,21 +6,21 @@ import kotlinx.coroutines.launch
 
 class BeersListViewModel(private val repository: BeerRepository, private val dispatcherProvider: CorroutineDispatcherProvider): ViewModel() {
 
-    var beerList =
-        MutableLiveData<List<BeerModel>>(emptyList())
+    private val _beerList = MutableLiveData<List<BeerModel>>(emptyList())
+    val beerList = _beerList
 
     fun getBeerList(page: Int = 1) {
         viewModelScope.launch(dispatcherProvider.io) {
-            repository.getBeers(false, page).also(::setList)
+            repository.getBeers(false, page).also(::treatGetBeerResult)
         }
     }
 
-    private fun setList(result: Either<Exception, List<BeerModel>>) {
+    private fun treatGetBeerResult(result: Either<Exception, List<BeerModel>>) {
             when(result){
                 is Either.Left -> {
-                    println("Hola ${result.value.message}")
+                    println("${result.value.message}")
                 }
-                is Either.Right -> beerList.postValue(result.value)
+                is Either.Right -> _beerList.postValue(result.value)
             }
     }
 }

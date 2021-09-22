@@ -10,7 +10,7 @@ class BeerRepository(databaseDriverFactory: DatabaseDriverFactory) {
             if (cachedBeers.isNotEmpty() && !forceReload) {
                 Either.Right(cachedBeers)
             } else {
-                val test = fromListBeerApiModelToBeerModel(api.getListOfBeers(page)).also { beers ->
+                val test = BeerMapper.fromListBeerApiModelToBeerModel(api.getListOfBeers(page)).also { beers ->
                     database.clearDatabase()
                     database.insertBeerList(beers)
                 }
@@ -20,30 +20,4 @@ class BeerRepository(databaseDriverFactory: DatabaseDriverFactory) {
             Either.Left(exception)
         }
     }
-
-    private fun fromListBeerApiModelToBeerModel(
-        beers: List<BeersApiResponseItem>
-    ): List<BeerModel> {
-        return beers.map { fromBeerApiModelToBeerModel(it) }
-    }
-
-
-    private fun fromBeerApiModelToBeerModel(
-        beer: BeersApiResponseItem
-    ): BeerModel {
-        with(beer) {
-            return BeerModel(
-                id ?: 0,
-                name ?: "",
-                tagline ?: "",
-                description ?: "",
-                imageUrl ?: "",
-                abv ?: 0.0,
-                ibu ?: 0.0,
-                foodPairing ?: listOf(),
-                false
-            )
-        }
-    }
-
 }

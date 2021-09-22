@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity: AppCompatActivity() {
 
-    val viewmodel by lazy {
+    private val viewmodel by lazy {
         BeersListViewModel(
             BeerRepository(DatabaseDriverFactory(this)),
             CorroutineDispatcherProvider()
@@ -34,7 +34,6 @@ class MainActivity: AppCompatActivity() {
             it.foodPairing
         }
         Toast.makeText(this, pairing.toString(), Toast.LENGTH_LONG).show()
-        println("Beers $value")
     }
 
     override fun onDestroy() {

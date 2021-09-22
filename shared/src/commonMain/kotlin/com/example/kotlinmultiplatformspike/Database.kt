@@ -1,9 +1,6 @@
 package com.example.kotlinmultiplatformspike
 
 import com.simtop.shared_db.beers.AppDatabase
-import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.Json
 
 internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
     private val database = AppDatabase(databaseDriverFactory.createDriver())
@@ -17,10 +14,10 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
     }
 
     internal fun getAllBeers(): List<BeerModel> {
-        return dbQuery.selectAllBeers(::fromBeerDbModelToBeer).executeAsList()
+        return dbQuery.selectAllBeers(::fromBeerDbValuesToBeer).executeAsList()
     }
 
-    private fun fromBeerDbModelToBeer(
+    private fun fromBeerDbValuesToBeer(
         id: Int,
         name: String,
         tagline: String,
@@ -30,39 +27,26 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
         ibu: Double,
         foodPairing: String,
         availability: Boolean
-    ): BeerModel {
-        val serializer = Json(from = Json) { ignoreUnknownKeys = true }
+    ): BeerModel =
+        BeerMapper.fromBeerDbModelToBeer(id, name, tagline, description, imageUrl, abv, ibu, foodPairing, availability)
 
-        return BeerModel(
-            id,
-            name,
-            tagline,
-            description,
-            imageUrl,
-            abv,
-            ibu,
-            serializer.decodeFromString(ListSerializer(String.serializer()), foodPairing),
-            availability
-        )
-    }
 
-    internal fun insertBeer(beer: BeerModel) {
-        val serializer = Json(from = Json) { ignoreUnknownKeys = true }
+    private fun insertBeer(beer: BeerModel) {
 
-        dbQuery.insertBeer(
-            id = beer.id,
-            name = beer.name,
-            tagline = beer.tagline,
-            description = beer.description,
-            imageUrl = beer.imageUrl,
-            abv = beer.abv,
-            ibu = beer.ibu,
-            foodPairing = serializer.encodeToString(
-                ListSerializer(String.serializer()),
-                beer.foodPairing
-            ),
-            availability = beer.availability
-        )
+        val dbBeerModel = BeerMapper.fromBeerModelToBeerDbModel(beer)
+
+        with(dbBeerModel) {
+            dbQuery.insertBeer(
+                id = id,
+                name = name,
+                tagline = tagline,
+                description = description,
+                imageUrl = imageUrl,
+                abv = abv,
+                ibu = ibu,
+                foodPairing = foodPairing,
+                availability = availability)
+        }
     }
 
     fun insertBeerList(beers: List<BeerModel>) = database.transaction {
