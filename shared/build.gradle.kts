@@ -16,10 +16,10 @@ val kodeinVersion = "7.1.0"
 val moko_mvvm_version = "0.10.0"
 val mockk_version = "1.9.3"
 val sql_delight_version = "1.4.4"
-val kotlin_version = "1.4.31"
 val kotlin_serialization_version = "1.2.2"
 
 val sqlDelightVersion: String by project
+val kotlinVersion: String by project
 
 
 kotlin {
@@ -76,8 +76,8 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion")
 
                 // MOKO - MVVM
                 implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
@@ -97,7 +97,7 @@ kotlin {
         }
         val iosMain by getting {
             dependencies {
-                implementation ("org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version")
+                implementation ("org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion")
 
                 // KTOR
                 implementation ("io.ktor:ktor-client-ios:$ktor_version")

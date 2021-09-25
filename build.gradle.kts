@@ -1,9 +1,8 @@
 buildscript {
-    val sql_delight_version = "1.4.4"
-    val kotlin_version = "1.5.10"
     val gradle_version = "7.1.0-alpha01"
     //TODO: Interesting way of getting version number, think in pros vs cons
     val sqlDelightVersion: String by project
+    val kotlinVersion: String by project
 
 
     repositories {
@@ -12,9 +11,9 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("com.android.tools.build:gradle:$gradle_version")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlin_version")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
         classpath("com.squareup.sqldelight:gradle-plugin:$sqlDelightVersion")
     }
 }
