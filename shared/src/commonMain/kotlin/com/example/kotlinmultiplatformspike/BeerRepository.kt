@@ -1,8 +1,6 @@
 package com.example.kotlinmultiplatformspike
 
-class BeerRepository(databaseDriverFactory: DatabaseDriverFactory) {
-    private val database = Database(databaseDriverFactory)
-    private val api = KtorRemote()
+class BeerRepository(private val database: Database, private val api: BeerService) {
 
     suspend fun getBeers(forceReload: Boolean, page: Int): Either<Exception, List<BeerModel>> {
         return try {

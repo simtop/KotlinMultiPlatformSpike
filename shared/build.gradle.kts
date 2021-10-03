@@ -12,11 +12,11 @@ version = "1.0"
 
 val coroutine_version = "1.4.0"
 val ktor_version = "1.5.3"
-val kodeinVersion = "7.1.0"
 val moko_mvvm_version = "0.10.0"
 val mockk_version = "1.9.3"
 val sql_delight_version = "1.4.4"
 val kotlin_serialization_version = "1.2.2"
+val koin_version = "3.0.2"
 
 val sqlDelightVersion: String by project
 val kotlinVersion: String by project
@@ -52,9 +52,6 @@ kotlin {
                 // MOKO - MVVM
                 implementation("dev.icerock.moko:mvvm:$moko_mvvm_version")
 
-                // Kodein
-                implementation("org.kodein.di:kodein-di:$kodeinVersion")
-
                 // KTOR
                 implementation("io.ktor:ktor-client-core:$ktor_version")
                 implementation("io.ktor:ktor-client-json:$ktor_version")
@@ -65,6 +62,8 @@ kotlin {
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
 
                 implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlin_serialization_version")
+
+                implementation("io.insert-koin:koin-core:$koin_version")
 
             }
         }
@@ -87,6 +86,8 @@ kotlin {
 
                 // SQL Delight
                 implementation("com.squareup.sqldelight:android-driver:$sqlDelightVersion")
+
+                implementation("io.insert-koin:koin-android:$koin_version")
             }
         }
         val androidTest by getting {

@@ -2,7 +2,7 @@ package com.example.kotlinmultiplatformspike
 
 import com.simtop.shared_db.beers.AppDatabase
 
-internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
+class Database(databaseDriverFactory: DatabaseDriverFactory) {
     private val database = AppDatabase(databaseDriverFactory.createDriver())
     private val dbQuery = database.appDatabaseQueries
 

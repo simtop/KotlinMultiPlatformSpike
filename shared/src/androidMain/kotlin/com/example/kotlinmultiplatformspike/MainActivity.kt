@@ -4,18 +4,14 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.component.KoinComponent
 
-class MainActivity: AppCompatActivity() {
+class MainActivity: AppCompatActivity(), KoinComponent {
 
-    private val viewmodel by lazy {
-        BeersListViewModel(
-            BeerRepository(DatabaseDriverFactory(this)),
-            CorroutineDispatcherProvider()
-        )
-    }
+    private val viewmodel: BeersListViewModel by viewModel()
 
     private lateinit var getBeersObserver : (beers: List<BeerModel>) -> Unit
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
