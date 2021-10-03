@@ -37,6 +37,12 @@ private val coreModule = module {
         KtorRemote()
     }
 
+    single {
+        GetBeerListUseCase(
+            get()
+        )
+    }
+
 }
 
 internal inline fun <reified T> Scope.getWith(vararg params: Any?): T {
